@@ -21,7 +21,11 @@ export async function loadJobs(): Promise<JobRow[]> {
   return (data ?? []) as unknown as JobRow[];
 }
 
-export const recruiterEmail = (j: JobRow) => j.companies?.contacts?.find((c) => c.verified)?.email ?? "";
+export const recruiterEmail = (j: JobRow) => {
+  const c = j.companies?.contacts ?? [];
+  const v = c.find((x) => x.verified);
+  return v ? v.email : c[0] ? `${c[0].email} (unverified)` : "";
+};
 
 export function applyFilters(rows: JobRow[], q?: string, status?: string, sort?: string, dir?: string) {
   let out = rows;

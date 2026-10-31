@@ -23,7 +23,7 @@ export default async function Dashboard({ searchParams }: { searchParams: SP }) 
     <main className="mx-auto max-w-6xl px-6 py-8">
       <header className="mb-6 flex items-baseline justify-between">
         <h1 className="text-2xl font-semibold">Job Agent</h1>
-        <div className="flex items-center gap-4"><RunButton /><a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a></div>
+        <div className="flex flex-wrap items-center justify-end gap-4"><RunButton kind="discover" /><RunButton kind="contacts" /><a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a></div>
       </header>
 
       <dl className="mb-8 grid grid-cols-2 gap-x-8 gap-y-4 border-b border-mist pb-6 md:grid-cols-4">

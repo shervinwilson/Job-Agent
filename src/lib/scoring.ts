@@ -83,3 +83,10 @@ export async function scoreJob(j: JobForScoring) {
   if (!ai.frontend_related) score = Math.min(score, 30);
   return { score, breakdown: { rules, ai } };
 }
+
+// Generic helper used by contact discovery (and later email writing)
+export async function askLLM(prompt: string): Promise<string | null> {
+  const p = aiProvider();
+  if (p === "none") return null;
+  return p === "gemini" ? callGemini(prompt) : callClaude(prompt);
+}
