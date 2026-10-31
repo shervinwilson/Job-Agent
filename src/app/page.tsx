@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { supabaseServer } from "@/lib/supabase/server";
 import { RunButton } from "@/components/RunButton";
 import { applyFilters, loadJobs, recruiterEmail, STATUSES, STATUS_LABEL } from "@/lib/jobs";
 
@@ -6,6 +8,7 @@ const TONE: Record<string, string> = { shortlisted: "bg-pine/10 text-pine", draf
 
 export default async function Dashboard({ searchParams }: { searchParams: SP }) {
   const all = await loadJobs();
+  const { data: tok } = await supabaseServer().from("oauth_tokens").select("provider").eq("provider", "google").maybeSingle();
   const rows = applyFilters(all, searchParams.q, searchParams.status, searchParams.sort, searchParams.dir);
   const n = (s: string[]) => all.filter((j) => s.includes(j.status)).length;
   const stats = [
@@ -23,7 +26,7 @@ export default async function Dashboard({ searchParams }: { searchParams: SP }) 
     <main className="mx-auto max-w-6xl px-6 py-8">
       <header className="mb-6 flex items-baseline justify-between">
         <h1 className="text-2xl font-semibold">Job Agent</h1>
-        <div className="flex flex-wrap items-center justify-end gap-4"><RunButton kind="discover" /><RunButton kind="contacts" /><a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a></div>
+        <div className="flex flex-wrap items-center justify-end gap-4"><RunButton kind="discover" /><RunButton kind="contacts" /><RunButton kind="emails" /><Link href="/drafts" className="text-sm text-pine underline">Review emails</Link>{tok ? <span className="text-sm text-ink/60">Gmail connected</span> : <a href="/api/gmail/connect" className="text-sm text-pine underline">Connect Gmail</a>}<a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a></div>
       </header>
 
       <dl className="mb-8 grid grid-cols-2 gap-x-8 gap-y-4 border-b border-mist pb-6 md:grid-cols-4">

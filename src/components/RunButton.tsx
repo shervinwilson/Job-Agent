@@ -7,9 +7,11 @@ const CFG = {
     fmt: (d: any) => `Found ${d.inserted} new, scored ${d.scored}, shortlisted ${d.shortlisted}.${d.unscored_remaining ? ` ${d.unscored_remaining} still to score. Run again.` : ""}${d.errors?.length ? ` ${d.errors.length} errors, see logs.` : ""}` },
   contacts: { url: "/api/contacts/discover", label: "Find contacts", busy: "Checking sites…",
     fmt: (d: any) => `Checked ${d.checked} companies: ${d.withVerified} verified, ${d.foundUnverified} unverified, ${d.noEmail} with no public email.${d.remaining ? ` ${d.remaining} left. Run again.` : ""}${d.errors?.length ? ` ${d.errors.length} errors.` : ""}` },
+  emails: { url: "/api/emails/generate", label: "Write emails", busy: "Writing…",
+    fmt: (d: any) => `Wrote ${d.drafts} Gmail drafts and ${d.textOnly} copy-only emails.${d.remaining ? ` ${d.remaining} left. Run again.` : ""}${d.errors?.length ? ` ${d.errors[0]}` : ""}` },
 };
 
-export function RunButton({ kind = "discover" }: { kind?: "discover" | "contacts" }) {
+export function RunButton({ kind = "discover" }: { kind?: "discover" | "contacts" | "emails" }) {
   const cfg = CFG[kind];
   const router = useRouter();
   const [busy, setBusy] = useState(false);

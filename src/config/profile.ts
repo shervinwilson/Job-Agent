@@ -16,4 +16,5 @@ export const PROFILE = {
   jobicyTags: ["react", "frontend", "wordpress"],
   remotiveQueries: ["frontend", "react"],
   maxAgeDays: 30,
+  noticePeriod: "30 days",
 };
