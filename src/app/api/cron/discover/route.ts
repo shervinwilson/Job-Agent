@@ -10,10 +10,11 @@ async function handle(req: Request) {
   const cronOk = !!process.env.CRON_SECRET && bearer === `Bearer ${process.env.CRON_SECRET}`;
   let ownerOk = false;
   if (!cronOk) {
-    const { data: { user } } = await supabaseServer().auth.getUser();
-    ownerOk = !!user?.email && user.email.toLowerCase() === process.env.ALLOWED_EMAIL?.toLowerCase();
+    // Same rule the database uses: the signed-in email must be in app_owner
+    const { data } = await supabaseServer().rpc("is_owner");
+    ownerOk = data === true;
   }
-  if (!cronOk && !ownerOk) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!cronOk && !ownerOk) return NextResponse.json({ error: "Unauthorized. Sign in again with the owner account." }, { status: 401 });
   try { return NextResponse.json(await runDiscovery()); }
   catch (e) { return NextResponse.json({ error: (e as Error).message }, { status: 500 }); }
 }
