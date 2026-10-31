@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
     },
   });
   const { data: { user } } = await supabase.auth.getUser();
-  const open = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/auth");
+  const open = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/auth") || req.nextUrl.pathname.startsWith("/api/cron");
   if (open) return res;
   const allowed = process.env.ALLOWED_EMAIL?.toLowerCase();
   if (!user || (allowed && user.email?.toLowerCase() !== allowed)) {

@@ -1,3 +1,4 @@
+import { RunButton } from "@/components/RunButton";
 import { applyFilters, loadJobs, recruiterEmail, STATUSES, STATUS_LABEL } from "@/lib/jobs";
 
 type SP = { q?: string; status?: string; sort?: string; dir?: string };
@@ -22,7 +23,7 @@ export default async function Dashboard({ searchParams }: { searchParams: SP }) 
     <main className="mx-auto max-w-6xl px-6 py-8">
       <header className="mb-6 flex items-baseline justify-between">
         <h1 className="text-2xl font-semibold">Job Agent</h1>
-        <a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a>
+        <div className="flex items-center gap-4"><RunButton /><a href={`/api/export?${qs}`} className="text-sm text-pine underline">Export CSV</a></div>
       </header>
 
       <dl className="mb-8 grid grid-cols-2 gap-x-8 gap-y-4 border-b border-mist pb-6 md:grid-cols-4">
@@ -56,7 +57,7 @@ export default async function Dashboard({ searchParams }: { searchParams: SP }) 
             <th className="px-3 py-2 font-medium"><a href={sortLink("status")}>Status</a></th>
           </tr></thead>
           <tbody>
-            {rows.length === 0 && (<tr><td colSpan={6} className="px-3 py-8 text-center text-ink/60">{all.length === 0 ? "No jobs yet. Job discovery is added in Stage 2." : "No jobs match these filters."}</td></tr>)}
+            {rows.length === 0 && (<tr><td colSpan={6} className="px-3 py-8 text-center text-ink/60">{all.length === 0 ? "No jobs yet. Select Run discovery." : "No jobs match these filters."}</td></tr>)}
             {rows.map((j) => (
               <tr key={j.id} className="border-b border-mist last:border-0">
                 <td className="px-3 py-2">{j.companies?.name ?? "—"}</td>
